@@ -1,13 +1,16 @@
 const Model = require('./model');
+const {
+  parsePaginationParams,
+} = require('./../../../utils/');
 
 exports.id = (req, res, next, id)=>{
-  Model.findById(id).then(data=>{
-    if(data){
-      req.data = data;
+  Model.findById(id).then(response=>{
+    if(response){
+      req.response = response;
       next();
     }else{
       res.json({ 
-        sucess: false,
+        success: false,
         message: `$Model.displayName not found`
       });
     }
@@ -17,14 +20,24 @@ exports.id = (req, res, next, id)=>{
 }
 
 exports.all = (req, res, next) => {
-  Model.findAll().then(response =>{
+    const {
+    query,
+  } = req;
+
+  const {
+    limit,
+    skip,
+    page,
+  } = parsePaginationParams(query);
+  
+  Model.paginateFind(skip, limit, page).then((response)=>{
     res.json({
-      sucess:true,
-      data:response,
-    });
+      success:true,
+      response:response
+    })
   }).catch((err) => {
     next(new Error(err));
-  });
+    });
 };
 
 exports.create = (req, res, next) => {
@@ -33,8 +46,8 @@ exports.create = (req, res, next) => {
   } = req;
   Model.create(body).then(response=>{
     res.json({
-      sucess:true,
-      data:response,
+      success:true,
+      response:response,
     });
   }).catch((err) => {
     next(new Error(err));
@@ -44,25 +57,25 @@ exports.create = (req, res, next) => {
 
 exports.read = (req, res, next) => {
   const {
-    data,
+    response,
   } = req;
   res.json({
-      sucess:true,
-      data:response,
+      success:true,
+      response:response,
     });
 };
 
 exports.update = (req, res, next) => {
   const {
-    data,
+    response,
     body,
   } = req;
-  Object.assign(data, body);
-  data.save()
+  Object.assign(response, body);
+  response.save()
     .then(response => {
       res.json({
-        sucess:true,
-        data:response,
+        success:true,
+        response:response,
     });
     })
     .catch((err) => {
@@ -72,13 +85,13 @@ exports.update = (req, res, next) => {
 
 exports.delete = (req, res, next) => {
   const {
-    data,
+    response,
   } = req;
- data.remove()
+ response.destroy()
   .then((response) => {
     res.json({
-      sucess:true,
-      data:response,
+      success:true,
+      response:response,
     });
   })
   .catch((err) => {
