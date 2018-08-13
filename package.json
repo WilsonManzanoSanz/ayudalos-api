@@ -1,0 +1,28 @@
+{
+  "name": "ayudalos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development nodemon index",
+    "start": "cross-env NODE_ENV=production node index"
+  },
+  "keywords": [],
+  "author": "Wilson Manzano",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.3",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cross-env": "^5.2.0",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "moment": "^2.22.2",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "sequelize": "^4.38.0"
+  }
+}
