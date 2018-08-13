@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { db } = require('../../../database');
 //TODO create a validator for email field
-const User = db.define('user', {
+const fields = {
   displayName: {
     type: Sequelize.STRING,
     allowNull: false
@@ -20,12 +20,17 @@ const User = db.define('user', {
     allowNull: false,
     unique: true,
   },
-});
+};
 
-User.paginateFind = (skip, limit, page) => new Promise((resolve, reject)=>{
+const User = db.define('user', fields
+);
+
+User.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
   
+  const query = { offset: skip, limit: limit, ...sort, };
+  console.log(query);
   const count = User.count();
-  const all = User.findAll({ offset: skip, limit: limit });
+  const all = User.findAll(query);
   
    Promise.all([count, all])
     .then((response) => {
@@ -51,4 +56,7 @@ User.sync({force: true}).then(() => {
   console.log('SE FUE A LA PUTA');
 });
 */
-module.exports = User;
+module.exports = {
+  Model:User,
+  fields
+};

@@ -10,6 +10,16 @@ const serverConfig = {
     skip: 0,
     page: 1,
   },
+  sort: {
+    sortBy: {
+      default: 'createdAt',
+      fields: ['createdAt', 'updatedAt'],
+    },
+    direction: {
+      default: 'DESC',
+      options: ['ASC', 'DESC'],
+    },
+  },
 };
 
 module.exports = serverConfig;

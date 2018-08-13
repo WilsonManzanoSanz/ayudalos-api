@@ -1,6 +1,10 @@
-const Model = require('./model');
+const {
+  Model, 
+  fields,
+} = require('./model');
 const {
   parsePaginationParams,
+  parseSortParams,
 } = require('./../../../utils/');
 
 exports.id = (req, res, next, id)=>{
@@ -30,7 +34,9 @@ exports.all = (req, res, next) => {
     page,
   } = parsePaginationParams(query);
   
-  Model.paginateFind(skip, limit, page).then((response)=>{
+  const sort = parseSortParams(query, fields);
+  
+  Model.paginateFind(skip, limit, sort, page).then((response)=>{
     res.json({
       success:true,
       response:response
