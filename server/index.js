@@ -3,23 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const databaseConfig = require('./database');
 const api = require('./api/v1/');
-const admin = require('firebase-admin');
-const apiRoutes = express.Router();
-
-apiRoutes.use((req, res, next) => {
-  const token = req.headers['x-access-token'];
-  admin.auth().verifyIdToken(token)
-      .then((decodedToken)=> {
-        const uid = decodedToken.uid;
-        next();
-      }).catch((error)=> {
-         return res.status(403).send({
-          success: false,
-          message: 'No token provided.'
-        });
-      });
-});
-app.use('/api', apiRoutes);
 
 databaseConfig.connect();
 

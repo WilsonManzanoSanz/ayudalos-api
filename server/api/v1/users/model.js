@@ -29,7 +29,6 @@ User.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
   let whereQuery = {where:{}};
   whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
-  console.log(whereQuery);
   User.findAll(whereQuery).then(users => {
     resolve(users);
   }).catch((err) => {
@@ -62,11 +61,11 @@ User.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>
       reject(err);
     });
 });
-/*
-User.sync({force: true}).then(() => {
+
+/*User.sync({force: true}).then(() => {
   console.log('SE FUE A LA PUTA');
-});
-*/
+});*/
+
 module.exports = {
   Model:User,
   fields
