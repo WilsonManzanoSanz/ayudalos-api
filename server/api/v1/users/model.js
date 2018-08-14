@@ -25,10 +25,21 @@ const fields = {
 const User = db.define('user', fields
 );
 
+User.searchByTittle = (query)=> new Promise((resolve, reject)=>{
+  const Op = Sequelize.Op;
+  let whereQuery = {where:{}};
+  whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
+  console.log(whereQuery);
+  User.findAll(whereQuery).then(users => {
+    resolve(users);
+  }).catch((err) => {
+      reject(err);
+  });
+});
+
 User.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
   
   const query = { offset: skip, limit: limit, ...sort, };
-  console.log(query);
   const count = User.count();
   const all = User.findAll(query);
   

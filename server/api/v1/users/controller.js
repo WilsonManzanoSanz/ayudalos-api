@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const {
   Model, 
   fields,
@@ -27,23 +28,33 @@ exports.all = (req, res, next) => {
     const {
     query,
   } = req;
-
+  
   const {
     limit,
     skip,
     page,
   } = parsePaginationParams(query);
-  
   const sort = parseSortParams(query, fields);
   
-  Model.paginateFind(skip, limit, sort, page).then((response)=>{
-    res.json({
+  if(query.key){
+    Model.searchByTittle(query).then((response)=>{
+      res.json({
       success:true,
       response:response
-    })
-  }).catch((err) => {
-    next(new Error(err));
+      });
+    }).catch((err) => {
+      next(new Error(err));
     });
+  } else {
+    Model.paginateFind(skip, limit, sort, page).then((response)=>{
+      res.json({
+        success:true,
+        response:response
+      });
+    }).catch((err) => {
+      next(new Error(err));
+    });
+  }
 };
 
 exports.create = (req, res, next) => {
