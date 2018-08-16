@@ -3,10 +3,6 @@ const {
   Model, 
   fields,
 } = require('./model');
-const {
-  parsePaginationParams,
-  parseSortParams,
-} = require('./../../../utils/');
 
 exports.id = (req, res, next, id)=>{
   Model.findById(id).then(response=>{
@@ -25,36 +21,16 @@ exports.id = (req, res, next, id)=>{
 }
 
 exports.all = (req, res, next) => {
-    const {
-    query,
-  } = req;
-  
-  const {
-    limit,
-    skip,
-    page,
-  } = parsePaginationParams(query);
-  const sort = parseSortParams(query, fields);
-  
-  if(query.key){
-    Model.searchByTittle(query).then((response)=>{
+  Model.findAll()
+    .then((response) => {
       res.json({
-      success:true,
-      response:response
+        success: true,
+        items: response,
       });
-    }).catch((err) => {
+    })
+    .catch((err) => {
       next(new Error(err));
     });
-  } else {
-    Model.paginateFind(skip, limit, sort, page).then((response)=>{
-      res.json({
-        success:true,
-        response:response
-      });
-    }).catch((err) => {
-      next(new Error(err));
-    });
-  }
 };
 
 exports.create = (req, res, next) => {
@@ -62,13 +38,10 @@ exports.create = (req, res, next) => {
     body,
   } = req;
   
-  if(!body.photoURL){
-    body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
-  }
-  Model.findOrCreate({where: {uid: body.uid}, defaults: body}).spread((user, created) => {
+  Model.create(body).then((response) => {
     res.json({
       success:true,
-      response:user,
+      response:response,
     });
   }).catch((err) => {
       next(new Error(err));

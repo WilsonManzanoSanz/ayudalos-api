@@ -4,17 +4,22 @@ const bodyParser = require('body-parser');
 const databaseConfig = require('./database');
 const api = require('./api/v1/');
 
+//CORS
+var cors = require('cors');
+app.use(cors());
+// Dabatabase connection
 databaseConfig.connect();
 
+// Body controll
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
 
 app.use(bodyParser.json());
-
+// Api version
 app.use('/api/v1', api);
 app.use('/api', api);
-
+//Default rejection
 app.use((req, res, next) => {
   res.status(404);
   res.json({

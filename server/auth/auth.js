@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const {Model} = require('../api/v1/users/model');
 
 let authModel = {};
 

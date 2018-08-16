@@ -13,7 +13,7 @@ router.route('/')
 
 router.route('/:id')
   .get(controller.read)
-  .put(authGuard.verifySameUser, controller.update)
-  .delete(authGuard.verifySameUser, controller.delete);
+  .put(controller.update)
+  .delete(controller.delete);
 
 module.exports = router;
