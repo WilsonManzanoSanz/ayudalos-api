@@ -2,38 +2,31 @@ const Sequelize = require('sequelize');
 const { db } = require('../../../database');
 //TODO create a validator for email field
 const fields = {
-  displayName: {
-    type: Sequelize.STRING,
-    allowNull: false
+ id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement:true,
   },
-  email: {
+  userUid: {
+    type: Sequelize.INTEGER,
+  },
+  tittle: {
     type: Sequelize.STRING,
-    unique: true,
-    allowNull: false
+     allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+     allowNull: false,
   },
   photoURL: {
     type: Sequelize.STRING
   },
-  uid: {
-    type: Sequelize.STRING,
-    primaryKey: true,
-    allowNull: false,
-    unique: true,
-  },
-  type: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  profile: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
 };
 
-const User = db.define('user', fields
+const Post = db.define('posts', fields
 );
 
-User.searchByTittle = (query)=> new Promise((resolve, reject)=>{
+Post.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
   let whereQuery = {where:{}};
   whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
@@ -44,11 +37,11 @@ User.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   });
 });
 
-User.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
+Post.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
   
   const query = { offset: skip, limit: limit, ...sort, };
-  const count = User.count();
-  const all = User.findAll(query);
+  const count = Post.count();
+  const all = Post.findAll(query);
   
    Promise.all([count, all])
     .then((response) => {
@@ -71,12 +64,11 @@ User.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>
 });
 
 module.exports = {
-  Model:User,
+  Model:Post,
   fields
 };
-
 /*
-User.sync({force: true}).then(() => {
+Post.sync().then(() => {
   console.log('SE FUE A LA PUTA');
 }); 
 */

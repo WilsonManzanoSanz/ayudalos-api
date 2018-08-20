@@ -30,7 +30,7 @@ const fields = {
   },
 };
 
-const User = db.define('user', fields
+const User = db.define('users', fields
 );
 
 User.searchByTittle = (query)=> new Promise((resolve, reject)=>{
@@ -50,6 +50,7 @@ User.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>
   const count = User.count();
   const all = User.findAll(query);
   
+  console.log('User ',User);
    Promise.all([count, all])
     .then((response) => {
       const [total = 0, data = [] ] = response;
@@ -76,7 +77,7 @@ module.exports = {
 };
 
 /*
-User.sync({force: true}).then(() => {
+User.sync().then(() => {
   console.log('SE FUE A LA PUTA');
-}); 
+});
 */

@@ -19,7 +19,7 @@ const connect = function() {
        console.log('CONNECTION WITH THE DATABASE HAS BEEN STABLISHED');
   })
     .catch((error) =>{
-       console.error('BAD ', erorr);
+       console.error('BAD ', error);
   });
 }
 

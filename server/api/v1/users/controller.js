@@ -3,6 +3,11 @@ const {
   Model, 
   fields,
 } = require('./model');
+
+const {
+  User,
+} = require('./../posts-user/relations');
+
 const {
   parsePaginationParams,
   parseSortParams,
@@ -37,21 +42,23 @@ exports.all = (req, res, next) => {
   const sort = parseSortParams(query, fields);
   
   if(query.key){
-    Model.searchByTittle(query).then((response)=>{
+    User.searchByTittle(query).then((response)=>{
       res.json({
       success:true,
       response:response
       });
     }).catch((err) => {
+      console.log('error: ',err);
       next(new Error(err));
     });
   } else {
-    Model.paginateFind(skip, limit, sort, page).then((response)=>{
+    User.paginateFind(skip, limit, sort, page).then((response)=>{
       res.json({
         success:true,
         response:response
       });
     }).catch((err) => {
+      console.log('error: ',err);
       next(new Error(err));
     });
   }
