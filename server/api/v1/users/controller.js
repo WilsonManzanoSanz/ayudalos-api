@@ -14,14 +14,14 @@ const {
 } = require('./../../../utils/');
 
 exports.id = (req, res, next, id)=>{
-  Model.findById(id).then(response=>{
+  User.findById(id).then(response=>{
     if(response){
       req.response = response;
       next();
     }else{
       res.json({ 
         success: false,
-        message: `$Model.displayName not found`
+        message: `User.displayName not found`
       });
     }
   }).catch(err=>{
@@ -48,7 +48,6 @@ exports.all = (req, res, next) => {
       response:response
       });
     }).catch((err) => {
-      console.log('error: ',err);
       next(new Error(err));
     });
   } else {
@@ -58,7 +57,6 @@ exports.all = (req, res, next) => {
         response:response
       });
     }).catch((err) => {
-      console.log('error: ',err);
       next(new Error(err));
     });
   }
@@ -72,7 +70,7 @@ exports.create = (req, res, next) => {
   if(!body.photoURL){
     body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
   }
-  Model.findOrCreate({where: {uid: body.uid}, defaults: body}).spread((user, created) => {
+  User.findOrCreate({where: {uid: body.uid}, defaults: body}).spread((user, created) => {
     res.json({
       success:true,
       response:user,
@@ -98,13 +96,13 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  Object.assign(response, body);
-  response.save()
+  const request = Object.assign(response, body);
+  response.save(request)
     .then(response => {
       res.json({
         success:true,
         response:response,
-    });
+      });
     })
     .catch((err) => {
       next(new Error(err));

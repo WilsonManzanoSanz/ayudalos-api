@@ -9,7 +9,12 @@ authModel.verifyToken = function(req, res, next){
       .then((decodedToken)=> {
         const uid = decodedToken.uid;
         next();
-      }).catch(rejectAuth);
+      }).catch(error=>{
+        res.status(403).send({
+              success: false,
+              message: 'No token provided.'
+      });
+  });
 }
 
 
@@ -17,18 +22,19 @@ authModel.verifySameUser = function(req, res, next){
   const token = req.headers['x-access-token'];
   admin.auth().verifyIdToken(token)
       .then((decodedToken)=> {
-        if(decodedToken.uid === req.query.uid){
+        if(decodedToken.uid === req.body.uid){
           next();
         }else{
-          rejectAuth();
+          res.status(203).send({
+            error: true,
+            message: 'Access denied',
+          });
         } 
-      }).catch(rejectAuth);
-}
-
-function rejectAuth(res){
-  return res.status(403).send({
-          success: false,
-          message: 'No token provided.'
+      }).catch(error=>{
+        res.status(403).send({
+              success: false,
+              message: `Access denied. ${error}`
+      });
   });
 }
 

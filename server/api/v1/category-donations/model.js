@@ -24,7 +24,7 @@ module.exports = {
 };
 
 /*
-categoryDonations.sync({force: true}).then(() => {
+categoryDonations.sync().then(() => {
   console.log('SE FUE A LA PUTA');
 }); 
 */

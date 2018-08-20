@@ -14,7 +14,7 @@ const fields = {
   },
 };
 
-const state = db.define('stetes', fields
+const state = db.define('states', fields
 );
 
 
@@ -24,7 +24,7 @@ module.exports = {
 };
 
 /*
-state.sync({force: true}).then(() => {
+state.sync().then(() => {
   console.log('SE FUE A LA PUTA');
-}); 
+});
 */

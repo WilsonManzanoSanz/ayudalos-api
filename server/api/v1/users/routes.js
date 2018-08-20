@@ -6,7 +6,6 @@ const authGuard = require('../../../auth/auth');
 
 router
   .param('id', controller.id);
-
 router.route('/')
   .get(controller.all)
   .post(controller.create);

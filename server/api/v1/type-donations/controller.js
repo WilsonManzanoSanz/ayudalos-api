@@ -60,6 +60,7 @@ exports.read = (req, res, next) => {
 };
 
 exports.update = (req, res, next) => {
+  console.log('update');
   const {
     response,
     body,

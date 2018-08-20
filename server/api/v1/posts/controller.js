@@ -3,20 +3,25 @@ const {
   Model, 
   fields,
 } = require('./model');
+
 const {
   parsePaginationParams,
   parseSortParams,
 } = require('./../../../utils/');
 
+const {
+  Post,
+} = require('./../posts-user/relations');
+
 exports.id = (req, res, next, id)=>{
-  Model.findById(id).then(response=>{
+  Post.findById(id).then(response=>{
     if(response){
       req.response = response;
       next();
     }else{
       res.json({ 
         success: false,
-        message: `$Model.displayName not found`
+        message: `Post.displayName not found`
       });
     }
   }).catch(err=>{
@@ -37,7 +42,7 @@ exports.all = (req, res, next) => {
   const sort = parseSortParams(query, fields);
   
   if(query.key){
-    Model.searchByTittle(query).then((response)=>{
+    Post.searchByTittle(query).then((response)=>{
       res.json({
       success:true,
       response:response
@@ -46,7 +51,7 @@ exports.all = (req, res, next) => {
       next(new Error(err));
     });
   } else {
-    Model.paginateFind(skip, limit, sort, page).then((response)=>{
+    Post.paginateFind(skip, limit, sort, page).then((response)=>{
       res.json({
         success:true,
         response:response
@@ -62,13 +67,10 @@ exports.create = (req, res, next) => {
     body,
   } = req;
   
-  if(!body.photoURL){
-    body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
-  }
-  Model.findOrCreate({where: {uid: body.uid}, defaults: body}).spread((user, created) => {
+  Post.create(body).then((created) => {
     res.json({
       success:true,
-      response:user,
+      response:created,
     });
   }).catch((err) => {
       next(new Error(err));
