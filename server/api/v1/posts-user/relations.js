@@ -1,12 +1,19 @@
+const Sequelize = require('sequelize');
 const dbUser = require('./../users/model'); 
 const dbPost = require('./../posts/model'); 
 const dbCaterogy = require('./../category-donations/model'); 
+const dbComment = require('./../posts-comments/model'); 
 const dbTypeDestination = require('./../type-destinations/model'); 
 const dbType = require('./../type-donations/model'); 
+const dbTypeUser = require('./../type-users/model'); 
 const dbState = require('./../states/model'); 
 
 dbPost.Model.belongsTo(dbUser.Model);  
 dbUser.Model.hasMany(dbPost.Model);
+dbUser.Model.belongsTo(dbTypeUser.Model);
+
+dbComment.Model.belongsTo(dbPost.Model);  
+dbPost.Model.hasMany(dbComment.Model);
 // Post relations
 dbPost.Model.belongsTo(dbCaterogy.Model);  
 //dbCaterogy.Model.hasOne(dbPost.Model);
@@ -16,12 +23,16 @@ dbPost.Model.belongsTo(dbType.Model);
 //dbCaterogy.Model.hasOne(dbPost.Model);
 dbPost.Model.belongsTo(dbState.Model);  
 //dbCaterogy.Model.hasOne(dbPost.Model);
+dbComment.Model.sync().
+  then(() => { }).
+  catch((error)=>console.error(error));
+dbPost.Model.sync()
+  .then(() => {})
+  .catch((error)=>console.error(error));
+dbUser.Model.sync().then(
+  () => { }).
+  catch((error)=>console.error(error));
 
-dbPost.Model.sync().then(() => {
-});
-
-dbUser.Model.sync().then(() => {
-});
 
 const include = [
         { model: dbUser.Model },
@@ -33,7 +44,7 @@ const include = [
 
 dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
-  const include = [{model: dbPost.Model}];
+  const include = [{model: dbPost.Model}, {model:dbTypeUser.Model}];
   let whereQuery = {where:{}, include:include};
   whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
   User.findAll(whereQuery).then(users => {
@@ -45,7 +56,7 @@ dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
 
 dbUser.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
  
-  const include = [{model: dbPost.Model}];
+  const include = [{model: dbPost.Model}, {model:dbTypeUser.Model}];
   const query = {include:include, offset:skip,limit:limit,...sort};
   //const query = { offset: skip, limit: limit, ...sort, };
   const count = dbUser.Model.count();
@@ -116,5 +127,11 @@ dbPost.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, r
 
 module.exports = {
   User: dbUser.Model,
-  Post:dbPost.Model
+  Post:dbPost.Model,
+  TypeDonation:dbType.Model,
+  TypeUser:dbTypeUser.Model,
+  TypeDestination:dbTypeDestination.Model,
+  State: dbState.Model,
+  Caterogy: dbCaterogy.Model
+  
 };

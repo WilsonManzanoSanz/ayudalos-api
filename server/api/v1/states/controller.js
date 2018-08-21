@@ -64,8 +64,7 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  Object.assign(response, body);
-  response.save()
+  response.update(body)
     .then(response => {
       res.json({
         success:true,

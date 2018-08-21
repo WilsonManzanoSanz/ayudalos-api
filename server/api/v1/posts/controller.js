@@ -11,10 +11,21 @@ const {
 
 const {
   Post,
+  User,
+  TypeDonation,
+  TypeDestination,
+  State,
+  Caterogy,
 } = require('./../posts-user/relations');
 
 exports.id = (req, res, next, id)=>{
-  Post.findById(id).then(response=>{
+  Post.findById(id, { include:[
+        { model: User },
+        { model: TypeDonation },
+        {model: TypeDestination},
+        {model: State},
+        {model: Caterogy}
+      ]}).then(response=>{
     if(response){
       req.response = response;
       next();
@@ -93,13 +104,12 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  Object.assign(response, body);
-  response.save()
+  response.update(body)
     .then(response => {
       res.json({
         success:true,
         response:response,
-    });
+      });
     })
     .catch((err) => {
       next(new Error(err));
@@ -110,7 +120,7 @@ exports.delete = (req, res, next) => {
   const {
     response,
   } = req;
- response.destroy()
+ response.destroy(response)
   .then((response) => {
     res.json({
       success:true,

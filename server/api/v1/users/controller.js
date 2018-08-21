@@ -6,6 +6,8 @@ const {
 
 const {
   User,
+  TypeUser,
+  Post,
 } = require('./../posts-user/relations');
 
 const {
@@ -14,15 +16,19 @@ const {
 } = require('./../../../utils/');
 
 exports.id = (req, res, next, id)=>{
-  User.findById(id).then(response=>{
-    if(response){
-      req.response = response;
-      next();
-    }else{
-      res.json({ 
-        success: false,
-        message: `User.displayName not found`
-      });
+  User.findById(id,{ include:[
+        { model: Post },
+        { model: TypeUser },
+      ]})
+    .then(response=>{
+      if(response){
+        req.response = response;
+        next();
+      }else{
+        res.json({ 
+          success: false,
+          message: `User.displayName not found`
+        });
     }
   }).catch(err=>{
     next(new Error(err))
@@ -96,8 +102,7 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  const request = Object.assign(response, body);
-  response.save(request)
+  response.update(body)
     .then(response => {
       res.json({
         success:true,
