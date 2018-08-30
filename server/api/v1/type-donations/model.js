@@ -14,7 +14,7 @@ const fields = {
   },
 };
 
-const typeDonations = db.define('type-donations', fields
+const typeDonations = db.define('typeDonations', fields
 );
 
 
@@ -22,7 +22,6 @@ module.exports = {
   Model:typeDonations,
   fields
 };
-
 /*
 typeDonations.sync({force: true}).then(() => {
   console.log('SE FUE A LA PUTA');

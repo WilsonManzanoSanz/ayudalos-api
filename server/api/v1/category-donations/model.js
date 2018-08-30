@@ -14,7 +14,7 @@ const fields = {
   },
 };
 
-const categoryDonations = db.define('category-donations', fields
+const categoryDonations = db.define('categoryDonations', fields
 );
 
 
@@ -24,7 +24,7 @@ module.exports = {
 };
 
 /*
-categoryDonations.sync().then(() => {
+categoryDonations.sync({force:true}).then(() => {
   console.log('SE FUE A LA PUTA');
 }); 
 */

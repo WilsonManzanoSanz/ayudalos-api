@@ -18,9 +18,8 @@ const fields = {
   }
 };
 
-const CommentPosts = db.define('comment-posts', fields
+const CommentPosts = db.define('commentPosts', fields
 );
-
 
 module.exports = {
   Model:CommentPosts,

@@ -14,7 +14,7 @@ const fields = {
   },
 };
 
-const parentComment= db.define('parent-comments', fields
+const parentComment= db.define('parentComments', fields
 );
 
 

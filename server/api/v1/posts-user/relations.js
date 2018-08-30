@@ -14,6 +14,8 @@ dbUser.Model.belongsTo(dbTypeUser.Model);
 
 dbComment.Model.belongsTo(dbPost.Model);  
 dbPost.Model.hasMany(dbComment.Model);
+
+dbComment.Model.belongsTo(dbUser.Model);  
 // Post relations
 dbPost.Model.belongsTo(dbCaterogy.Model);  
 //dbCaterogy.Model.hasOne(dbPost.Model);
@@ -23,7 +25,7 @@ dbPost.Model.belongsTo(dbType.Model);
 //dbCaterogy.Model.hasOne(dbPost.Model);
 dbPost.Model.belongsTo(dbState.Model);  
 //dbCaterogy.Model.hasOne(dbPost.Model);
-dbComment.Model.sync().
+/*dbComment.Model.sync().
   then(() => { }).
   catch((error)=>console.error(error));
 dbPost.Model.sync()
@@ -32,20 +34,21 @@ dbPost.Model.sync()
 dbUser.Model.sync().then(
   () => { }).
   catch((error)=>console.error(error));
+*/
 
-
-const include = [
+const includePost = [
         { model: dbUser.Model },
         { model: dbCaterogy.Model },
         { model: dbTypeDestination.Model },
         { model: dbType.Model },
         { model: dbState.Model },
+        { model: dbComment.Model },
       ];
+ const includeUser = [{model: dbPost.Model, limit:10}, {model:dbTypeUser.Model}];
 
 dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
-  const include = [{model: dbPost.Model}, {model:dbTypeUser.Model}];
-  let whereQuery = {where:{}, include:include};
+  let whereQuery = {where:{}, include:includeUser};
   whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
   User.findAll(whereQuery).then(users => {
     resolve(users);
@@ -55,9 +58,7 @@ dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
 });
 
 dbUser.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
- 
-  const include = [{model: dbPost.Model}, {model:dbTypeUser.Model}];
-  const query = {include:include, offset:skip,limit:limit,...sort};
+  const query = {include:includeUser, offset:skip,limit:limit,...sort};
   //const query = { offset: skip, limit: limit, ...sort, };
   const count = dbUser.Model.count();
   const all = dbUser.Model.findAll(query);
@@ -67,7 +68,7 @@ dbUser.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, r
       const [total = 0, data = [] ] = response;
       const pages = Math.ceil(total / limit);
       resolve({
-        data: data,
+        items: data,
         meta: {
           limit,
           skip,
@@ -84,7 +85,7 @@ dbUser.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, r
 
 dbPost.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
-  let whereQuery = {where:{},include: include};
+  let whereQuery = {where:{},include: includePost};
   whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
   dbPost.Model.findAll(whereQuery).then(users => {
     resolve(users);
@@ -96,7 +97,7 @@ dbPost.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
 dbPost.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
   
    const query = {
-      include: include,
+      include: includePost,
       offset:skip,
       limit:limit,
       ...sort,
@@ -110,7 +111,7 @@ dbPost.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, r
       const [total = 0, data = [] ] = response;
       const pages = Math.ceil(total / limit);
       resolve({
-        data: data,
+        items: data,
         meta: {
           limit,
           skip,

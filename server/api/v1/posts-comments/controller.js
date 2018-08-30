@@ -41,7 +41,7 @@ exports.create = (req, res, next) => {
   Model.create(body).then((response) => {
     res.json({
       success:true,
-      response:response,
+      data:response,
     });
   }).catch((err) => {
       next(new Error(err));
@@ -55,7 +55,7 @@ exports.read = (req, res, next) => {
   } = req;
   res.json({
       success:true,
-      response:response,
+      data:response,
     });
 };
 
@@ -68,7 +68,7 @@ exports.update = (req, res, next) => {
     .then(response => {
       res.json({
         success:true,
-        response:response,
+        data:response,
     });
     })
     .catch((err) => {
@@ -84,7 +84,7 @@ exports.delete = (req, res, next) => {
   .then((response) => {
     res.json({
       success:true,
-      response:response,
+      data:response,
     });
   })
   .catch((err) => {

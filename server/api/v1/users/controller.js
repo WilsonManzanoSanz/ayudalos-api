@@ -15,11 +15,13 @@ const {
   parseSortParams,
 } = require('./../../../utils/');
 
-exports.id = (req, res, next, id)=>{
-  User.findById(id,{ include:[
-        { model: Post },
+const includes = { include:[
+        { model: Post , limit:10},
         { model: TypeUser },
-      ]})
+      ]};
+
+exports.id = (req, res, next, id)=>{
+  User.findById(id,includes)
     .then(response=>{
       if(response){
         req.response = response;
@@ -51,7 +53,7 @@ exports.all = (req, res, next) => {
     User.searchByTittle(query).then((response)=>{
       res.json({
       success:true,
-      response:response
+      data:response
       });
     }).catch((err) => {
       next(new Error(err));
@@ -60,7 +62,7 @@ exports.all = (req, res, next) => {
     User.paginateFind(skip, limit, sort, page).then((response)=>{
       res.json({
         success:true,
-        response:response
+        data:response
       });
     }).catch((err) => {
       next(new Error(err));
@@ -76,7 +78,7 @@ exports.create = (req, res, next) => {
   if(!body.photoURL){
     body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
   }
-  User.findOrCreate({where: {uid: body.uid}, defaults: body}).spread((user, created) => {
+  User.findOrCreate({where: {uid: body.uid}, defaults: body, includes}).spread((user, created) => {
     res.json({
       success:true,
       response:user,
@@ -93,7 +95,7 @@ exports.read = (req, res, next) => {
   } = req;
   res.json({
       success:true,
-      response:response,
+     data:response
     });
 };
 
@@ -102,11 +104,11 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  response.update(body)
+  response.update(body, includes)
     .then(response => {
       res.json({
         success:true,
-        response:response,
+        data:response
       });
     })
     .catch((err) => {
@@ -122,7 +124,7 @@ exports.delete = (req, res, next) => {
   .then((response) => {
     res.json({
       success:true,
-      response:response,
+      data:response
     });
   })
   .catch((err) => {

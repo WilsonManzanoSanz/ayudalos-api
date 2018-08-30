@@ -18,14 +18,16 @@ const {
   Caterogy,
 } = require('./../posts-user/relations');
 
-exports.id = (req, res, next, id)=>{
-  Post.findById(id, { include:[
+const includes = { include:[
         { model: User },
         { model: TypeDonation },
         {model: TypeDestination},
         {model: State},
         {model: Caterogy}
-      ]}).then(response=>{
+      ]};
+
+exports.id = (req, res, next, id)=>{
+  Post.findById(id, includes).then(response=>{
     if(response){
       req.response = response;
       next();
@@ -56,7 +58,7 @@ exports.all = (req, res, next) => {
     Post.searchByTittle(query).then((response)=>{
       res.json({
       success:true,
-      response:response
+      data:response
       });
     }).catch((err) => {
       next(new Error(err));
@@ -65,7 +67,7 @@ exports.all = (req, res, next) => {
     Post.paginateFind(skip, limit, sort, page).then((response)=>{
       res.json({
         success:true,
-        response:response
+        data:response
       });
     }).catch((err) => {
       next(new Error(err));
@@ -78,7 +80,7 @@ exports.create = (req, res, next) => {
     body,
   } = req;
   
-  Post.create(body).then((created) => {
+  Post.create(body, includes).then((created) => {
     res.json({
       success:true,
       response:created,
@@ -95,7 +97,7 @@ exports.read = (req, res, next) => {
   } = req;
   res.json({
       success:true,
-      response:response,
+      data:response,
     });
 };
 
@@ -104,11 +106,11 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  response.update(body)
+  response.update(body, includes)
     .then(response => {
       res.json({
         success:true,
-        response:response,
+        data:response,
       });
     })
     .catch((err) => {
@@ -124,7 +126,7 @@ exports.delete = (req, res, next) => {
   .then((response) => {
     res.json({
       success:true,
-      response:response,
+      data:response,
     });
   })
   .catch((err) => {

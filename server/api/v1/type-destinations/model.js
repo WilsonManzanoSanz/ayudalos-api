@@ -14,7 +14,7 @@ const fields = {
   },
 };
 
-const typeDestination = db.define('type-destinations', fields
+const typeDestination = db.define('typeDestinations', fields
 );
 
 
@@ -22,7 +22,6 @@ module.exports = {
   Model:typeDestination,
   fields
 };
-
 /*
 typeDestination.sync({force: true}).then(() => {
   console.log('SE FUE A LA PUTA');

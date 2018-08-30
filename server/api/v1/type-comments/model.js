@@ -14,7 +14,7 @@ const fields = {
   },
 };
 
-const typeComment= db.define('type-comments', fields
+const typeComment= db.define('typeComments', fields
 );
 
 
@@ -22,7 +22,6 @@ module.exports = {
   Model:typeComment,
   fields
 };
-
 /*
 typeComment.sync({force: true}).then(() => {
   console.log('SE FUE A LA PUTA');

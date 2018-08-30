@@ -17,7 +17,7 @@ const fields = {
   }
 };
 
-const tpyeUser = db.define('type-users', fields
+const tpyeUser = db.define('typeUsers', fields
 );
 
 
