@@ -5,7 +5,7 @@ const {port, hostname} = serverConfig.server;
 const server = http.createServer(app);
 //Firebase initialization
 const admin = require('firebase-admin');
-const serviceAccount = require('./helpthem-60d1a-firebase-adminsdk-uxqv8-98e6619160.json');
+const serviceAccount = require('./ayudalos-dev-firebase-adminsdk-hkt9x-81fc48233a.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://helpthem-60d1a.firebaseio.com'

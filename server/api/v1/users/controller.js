@@ -15,12 +15,20 @@ const {
   parseSortParams,
 } = require('./../../../utils/');
 
-const includes = { include:[
-        { model: Post , limit:10},
+exports.id = (req, res, next, id) => {
+  let includes = { include:[
+        { model: Post , limit:10, offset: 0},
         { model: TypeUser },
-      ]};
-
-exports.id = (req, res, next, id)=>{
+  ]};
+  if(req.query.skip){
+    const {
+       limit,
+      skip
+    } = req.query;
+     includes.include[0].limit = parseInt(limit);
+     includes.include[0].offset = parseInt(skip);
+  }
+  console.log(includes.include[0]);
   User.findById(id,includes)
     .then(response=>{
       if(response){
@@ -104,7 +112,7 @@ exports.update = (req, res, next) => {
     response,
     body,
   } = req;
-  response.update(body, includes)
+  response.update(body)
     .then(response => {
       res.json({
         success:true,
