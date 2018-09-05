@@ -9,23 +9,18 @@ const dbTypeUser = require('./../type-users/model');
 const dbState = require('./../states/model'); 
 
 dbPost.Model.belongsTo(dbUser.Model);  
+dbComment.Model.belongsTo(dbPost.Model);
+dbComment.Model.belongsTo(dbUser.Model);  
 dbUser.Model.hasMany(dbPost.Model);
-dbUser.Model.belongsTo(dbTypeUser.Model);
-
-dbComment.Model.belongsTo(dbPost.Model);  
 dbPost.Model.hasMany(dbComment.Model);
 
-dbComment.Model.belongsTo(dbUser.Model);  
-// Post relations
+dbUser.Model.belongsTo(dbTypeUser.Model);
 dbPost.Model.belongsTo(dbCaterogy.Model);  
-//dbCaterogy.Model.hasOne(dbPost.Model);
 dbPost.Model.belongsTo(dbTypeDestination.Model);  
-//dbCaterogy.Model.hasOne(dbPost.Model);
-dbPost.Model.belongsTo(dbType.Model);  
-//dbCaterogy.Model.hasOne(dbPost.Model);
+dbPost.Model.belongsTo(dbType.Model); 
 dbPost.Model.belongsTo(dbState.Model);  
-//dbCaterogy.Model.hasOne(dbPost.Model);
-/*dbComment.Model.sync().
+/*
+dbComment.Model.sync().
   then(() => { }).
   catch((error)=>console.error(error));
 dbPost.Model.sync()
@@ -35,16 +30,16 @@ dbUser.Model.sync().then(
   () => { }).
   catch((error)=>console.error(error));
 */
-
 const includePost = [
         { model: dbUser.Model },
         { model: dbCaterogy.Model },
         { model: dbTypeDestination.Model },
         { model: dbType.Model },
         { model: dbState.Model },
-        { model: dbComment.Model },
+        { model: dbComment.Model, include: {model:dbUser.Model} },
       ];
- const includeUser = [{model: dbPost.Model, limit:10}, {model:dbTypeUser.Model}];
+ const includeUser = [{model: dbPost.Model, include: {model:dbComment.Model, include:{model:dbUser.Model}}, limit:10}, 
+                      {model:dbTypeUser.Model}];
 
 dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
@@ -133,6 +128,6 @@ module.exports = {
   TypeUser:dbTypeUser.Model,
   TypeDestination:dbTypeDestination.Model,
   State: dbState.Model,
-  Caterogy: dbCaterogy.Model
-  
+  Caterogy: dbCaterogy.Model,
+  Comments: dbComment.Model
 };

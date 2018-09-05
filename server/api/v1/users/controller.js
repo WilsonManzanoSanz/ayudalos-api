@@ -8,6 +8,7 @@ const {
   User,
   TypeUser,
   Post,
+  Comments,
 } = require('./../posts-user/relations');
 
 const {
@@ -17,7 +18,7 @@ const {
 
 exports.id = (req, res, next, id) => {
   let includes = { include:[
-        { model: Post , limit:10, offset: 0},
+        { model: Post , limit:10, offset: 0, include: {model:Comments, include:{model:User}}},
         { model: TypeUser },
   ]};
   if(req.query.skip){

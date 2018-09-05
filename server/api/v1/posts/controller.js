@@ -16,6 +16,7 @@ const {
   TypeDestination,
   State,
   Caterogy,
+  Comments
 } = require('./../posts-user/relations');
 
 const includes = { include:[
@@ -23,7 +24,8 @@ const includes = { include:[
         { model: TypeDonation },
         {model: TypeDestination},
         {model: State},
-        {model: Caterogy}
+        {model: Caterogy},
+        {model: Comments, include: {model:User}}
       ]};
 
 exports.id = (req, res, next, id)=>{

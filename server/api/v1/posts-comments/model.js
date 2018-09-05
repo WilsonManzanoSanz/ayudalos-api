@@ -9,8 +9,7 @@ const fields = {
     unique: true,
   },
   type: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: Sequelize.INTEGER,
   },
   description:{
     type: Sequelize.STRING,
@@ -25,7 +24,6 @@ module.exports = {
   Model:CommentPosts,
   fields
 };
-
 /*
 CommentPosts.sync({force:true}).then(() => {
   console.log('SE FUE A LA PUTA');
