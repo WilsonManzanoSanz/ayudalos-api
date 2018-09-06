@@ -22,7 +22,8 @@ authModel.verifySameUser = function(req, res, next){
   const token = req.headers['x-access-token'];
   admin.auth().verifyIdToken(token)
       .then((decodedToken)=> {
-        if(decodedToken.uid === req.body.uid){
+        const requestId = (req.body.uid ) ? req.body.uid : req.query;
+        if(decodedToken.uid === requestId.uid){
           next();
         }else{
           res.status(203).send({
