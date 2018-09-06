@@ -12,8 +12,8 @@ router.route('/')
   .post(controller.create);
 
 router.route('/:id')
-  .get(authGuard.verifyToken, controller.read)
-  .put(authGuard.verifySameUser, controller.update)
-  .delete(authGuard.verifySameUser, controller.delete);
+  .get(controller.read)
+  .put(controller.update)
+  .delete(controller.delete);
 
 module.exports = router;
