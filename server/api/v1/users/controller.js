@@ -16,6 +16,11 @@ const {
   parseSortParams,
 } = require('./../../../utils/');
 
+const includesAll = { include:[
+        { model: Post , limit:10, offset: 0, include: {model:Comments, include:{model:User}}},
+        { model: TypeUser },
+  ]}
+
 exports.id = (req, res, next, id) => {
   let includes = { include:[
         { model: Post , limit:10, offset: 0, include: {model:Comments, include:{model:User}}},
@@ -29,7 +34,6 @@ exports.id = (req, res, next, id) => {
      includes.include[0].limit = parseInt(limit);
      includes.include[0].offset = parseInt(skip);
   }
-  console.log(includes.include[0]);
   User.findById(id,includes)
     .then(response=>{
       if(response){
@@ -87,14 +91,38 @@ exports.create = (req, res, next) => {
   if(!body.photoURL){
     body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
   }
-  User.findOrCreate({where: {uid: body.uid}, defaults: body, includes}).spread((user, created) => {
-    res.json({
-      success:true,
-      response:user,
-    });
-  }).catch((err) => {
-      next(new Error(err));
-  });
+  console.log('UID', JSON.stringify(body.uid));
+  User.findById(body.uid, includesAll)
+        .then((obj) => {
+                 res.json({
+                    success:true,
+                    data:obj
+                  });
+            if(obj) { // update
+                User.update(body)
+                .then(response => {
+                  res.json({
+                    success:true,
+                    data:response
+                  });
+                })
+                .catch((err) => {
+                  next(new Error(err));
+                });
+            }
+            else { // insert
+                User.create(body)
+                .then(response => {
+                  res.json({
+                    success:true,
+                    data:response
+                  });
+                })
+                .catch((err) => {
+                  next(new Error(err));
+                });
+            }
+      }).catch((error) =>  next(new Error(error)));
 };
 
 

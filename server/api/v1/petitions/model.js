@@ -23,17 +23,25 @@ const fields = {
   },
    goal: {
     type: Sequelize.INTEGER,
-  }  
+  },
+  raised: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+  } 
 };
 
 const Petition = db.define('petitions', fields
 );
 
+//db.query("ALTER TABLE petitions ADD raised INT AFTER goal").then(success => console.log(success)).catch(error => console.error(er));
+
 module.exports = {
   Model:Petition,
   fields
 };
+
 /*
-Petition.sync({force:true}).then(() => {
+Petition.sync().then(() => {
   console.log('SE FUE A LA PUTA');
-}); */
+}); 
+*/
