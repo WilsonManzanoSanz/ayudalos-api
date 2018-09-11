@@ -12,18 +12,25 @@ const {
 } = require('./../posts-user/relations');
 
 const {
+  Petition,
+  PetitionComment,
+} = require('./../petitions-user/relations');
+
+const {
   parsePaginationParams,
   parseSortParams,
 } = require('./../../../utils/');
 
 const includesAll = { include:[
         { model: Post , limit:10, offset: 0, include: {model:Comments, include:{model:User}}},
+        { model: Petition , limit:10, offset: 0, include: {model:PetitionComment, include:{model:User}}},
         { model: TypeUser },
   ]}
 
 exports.id = (req, res, next, id) => {
   let includes = { include:[
         { model: Post , limit:10, offset: 0, include: {model:Comments, include:{model:User}}},
+        { model: Petition , limit:10, offset: 0, include: {model:PetitionComment, include:{model:User}}},
         { model: TypeUser },
   ]};
   if(req.query.skip){
@@ -33,6 +40,8 @@ exports.id = (req, res, next, id) => {
     } = req.query;
      includes.include[0].limit = parseInt(limit);
      includes.include[0].offset = parseInt(skip);
+     includes.include[1].limit = parseInt(limit);
+     includes.include[1].offset = parseInt(skip);
   }
   User.findById(id,includes)
     .then(response=>{
@@ -112,10 +121,10 @@ exports.create = (req, res, next) => {
             }
             else { // insert
                 User.create(body)
-                .then(response => {
+                .then(created => {
                   res.json({
                     success:true,
-                    data:response
+                    data:created
                   });
                 })
                 .catch((err) => {

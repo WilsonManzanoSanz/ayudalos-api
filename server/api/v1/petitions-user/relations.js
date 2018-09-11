@@ -129,5 +129,5 @@ module.exports = {
   TypeDestination:dbTypeDestination.Model,
   State: dbState.Model,
   Caterogy: dbCaterogy.Model,
-  Comments: dbComment.Model
+  PetitionComment: dbComment.Model
 };
