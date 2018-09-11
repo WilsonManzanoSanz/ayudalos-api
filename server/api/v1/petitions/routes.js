@@ -14,6 +14,6 @@ router.route('/')
 router.route('/:id')
   .get(authGuard.verifyToken, controller.read)
   .put(authGuard.verifySameUser, controller.update)
-  .delete(authGuard.verifySameUser, controller.delete);
+  .delete( controller.delete);
 
 module.exports = router;
