@@ -19,7 +19,7 @@ dbPetition.Model.belongsTo(dbCaterogy.Model);
 dbPetition.Model.belongsTo(dbTypeDestination.Model);  
 dbPetition.Model.belongsTo(dbType.Model); 
 dbPetition.Model.belongsTo(dbState.Model);  
-
+/*
 dbComment.Model.sync().
   then(() => { }).
   catch((error)=>console.error(error));
@@ -29,7 +29,7 @@ dbPetition.Model.sync()
 dbUser.Model.sync().then(
   () => { }).
   catch((error)=>console.error(error));
-
+*/
 const includePetition = [
         { model: dbUser.Model },
         { model: dbCaterogy.Model },

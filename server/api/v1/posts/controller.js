@@ -82,7 +82,7 @@ exports.create = (req, res, next) => {
     body,
   } = req;
   
-  Post.create(body, includes).then((created) => {
+  Post.create(body).then((created) => {
     res.json({
       success:true,
       response:created,

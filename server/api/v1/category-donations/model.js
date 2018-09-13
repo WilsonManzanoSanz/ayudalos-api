@@ -12,6 +12,9 @@ const fields = {
     type: Sequelize.STRING,
     allowNull: false,
   },
+   moneyRequired: {
+    type: Sequelize.INTEGER,
+  },
 };
 
 const categoryDonations = db.define('categoryDonations', fields
@@ -22,9 +25,10 @@ module.exports = {
   Model:categoryDonations,
   fields
 };
-
 /*
-categoryDonations.sync({force:true}).then(() => {
+db.query("ALTER TABLE categoryDonations ADD moneyRequired INT AFTER category").then(success => console.log(success)).catch(error => console.error(er));
+
+categoryDonations.sync().then(() => {
   console.log('SE FUE A LA PUTA');
 }); 
 */

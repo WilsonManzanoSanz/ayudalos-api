@@ -36,6 +36,10 @@ module.exports = {
   Model:Post,
   fields
 };
+
+//db.query("ALTER TABLE petitions ADD raised INT AFTER goal").then(success => console.log(success)).catch(error => console.error(error));
+//db.query("alter table posts drop foreign key posts_ibfk_2").then(success => console.log(success)).catch(error => console.error(error));
+
 /*
 Post.sync().then(() => {
   console.log('SE FUE A LA PUTA');
