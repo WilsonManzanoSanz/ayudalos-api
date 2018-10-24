@@ -9,11 +9,11 @@ router
 
 router.route('/')
   .get(controller.all)
-  .post(controller.create);
+  .post(authGuard.verifyToken, controller.create);
 
 router.route('/:id')
-  .get(authGuard.verifyToken, controller.read)
-  .put( controller.update)
+  .get(controller.read)
+  .put(authGuard.verifySameUser, controller.update)
   .delete(authGuard.verifySameUser, controller.delete);
 
 module.exports = router;
