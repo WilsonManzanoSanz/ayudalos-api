@@ -30,8 +30,9 @@ module.exports = {
   fields
 };
 
-/*
+//db.query("ALTER TABLE users ADD typeUserId INT AFTER uid").then(success => console.log(success)).catch(error => console.error(error));
+
 User.sync().then(() => {
-  console.log('SE FUE A LA PUTA');
+  //console.log('SE FUE A LA PUTA');
 });
-*/
+

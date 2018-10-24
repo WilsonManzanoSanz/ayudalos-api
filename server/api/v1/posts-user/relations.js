@@ -19,7 +19,7 @@ dbPost.Model.belongsTo(dbCaterogy.Model);
 dbPost.Model.belongsTo(dbTypeDestination.Model);  
 dbPost.Model.belongsTo(dbType.Model); 
 dbPost.Model.belongsTo(dbState.Model);  
-/*
+
 dbComment.Model.sync().
   then(() => { }).
   catch((error)=>console.error(error));
@@ -29,7 +29,7 @@ dbPost.Model.sync()
 dbUser.Model.sync().then(
   () => { }).
   catch((error)=>console.error(error));
-*/
+
 const includePost = [
         { model: dbUser.Model },
         { model: dbCaterogy.Model },

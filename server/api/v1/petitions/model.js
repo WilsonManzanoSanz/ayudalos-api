@@ -33,15 +33,15 @@ const fields = {
 const Petition = db.define('petitions', fields
 );
 
-//db.query("ALTER TABLE petitions ADD raised INT AFTER goal").then(success => console.log(success)).catch(error => console.error(er));
+//db.query("ALTER TABLE petitions ADD stateId INT AFTER raised").then(success => console.log(success)).catch(error => console.error(error));
 
 module.exports = {
   Model:Petition,
   fields
 };
 
-/*
+
 Petition.sync().then(() => {
-  console.log('SE FUE A LA PUTA');
-}); 
-*/
+ // console.log('SE FUE A LA PUTA');
+});
+
