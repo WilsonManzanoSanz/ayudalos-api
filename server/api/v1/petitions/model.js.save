@@ -33,10 +33,10 @@ const fields = {
 const Petition = db.define('petitions', fields
 );
 
-//db.query("ALTER TABLE petitions ADD userUid varchar(255) after photoURL").then(success => console.log(success)).catch(error => console.error(error));
+db.query("ALTER TABLE petitions ADD categoryDonationId INT AFTER raised").then(success => console.log(success)).catch(error => console.error(error));
 
 module.exports = {
-  Model:Petition,
+ categoryDonationId  Model:Petition,
   fields
 };
 

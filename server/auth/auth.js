@@ -5,11 +5,14 @@ let authModel = {};
 
 authModel.verifyToken = function(req, res, next){
   const token = req.headers['x-access-token'];
+ // console.log('tokenHeader', token);
   admin.auth().verifyIdToken(token)
       .then((decodedToken)=> {
-        const uid = decodedToken.uid;
+        const requestId = (req.body.uid ) ? req.body.uid : req.query.uid;
+        console.log('tokenPost', req.body);
         next();
       }).catch(error=>{
+	console.log(error);
         res.status(403).send({
               success: false,
               message: 'No token provided.'

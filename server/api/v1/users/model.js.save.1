@@ -1,0 +1,40 @@
+const Sequelize = require('sequelize');
+const { db } = require('../../../database');
+//TODO create a validator for email field
+const fields = {
+  displayName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  email: {
+    type: Sequelize.STRING,
+    unique: true,
+    allowNull: false
+  },
+  photoURL: {
+    type: Sequelize.STRING
+  },
+  uid: {
+    type: Sequelize.STRING,
+typeUserId    primaryKey: true,
+    allowNull: false,
+    unique: true,
+  },
+  typeUserId: {
+	type: Sequelize.INTEGER,
+	},
+};
+
+const User = db.define('users', fields
+);
+
+module.exports = {
+  Model:User,
+  fields
+};
+
+
+User.sync().then(() => {
+  console.log('SE FUE A LA PUTA');
+});
+
