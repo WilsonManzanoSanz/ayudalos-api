@@ -45,7 +45,7 @@ dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
   const Op = Sequelize.Op;
   let whereQuery = {where:{}, include:includeUser};
   whereQuery.where[query.key] = {[Op.like]: `%${query.value}%`};
-  User.findAll(whereQuery).then(users => {
+  dbUser.Model.findAll(whereQuery).then(users => {
     resolve(users);
   }).catch((err) => {
       reject(err);
@@ -53,8 +53,8 @@ dbUser.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
 });
 
 dbUser.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
-  const query = {include:includeUser, offset:skip,limit:limit,...sort};
-  //const query = { offset: skip, limit: limit, ...sort, };
+  const query = Object.assign({include:includeUser, offset:skip,limit:limit}, sort);
+  //const query = {include:includeUser, offset:skip,limit:limit,...sort};
   const count = dbUser.Model.count();
   const all = dbUser.Model.findAll(query);
   
@@ -91,13 +91,13 @@ dbPetition.Model.searchByTittle = (query)=> new Promise((resolve, reject)=>{
 
 dbPetition.Model.paginateFind = (skip, limit, sort, page) => new Promise((resolve, reject)=>{
   
-   const query = {
+  /* const query = {
       include: includePetition,
       offset:skip,
       limit:limit,
       ...sort,
-  };
-  //const query = { offset: skip, limit: limit, ...sort, };
+  };*/
+  const query = Object.assign({include:includePetition, offset:skip,limit:limit}, sort);
   const count = dbPetition.Model.count();
   const all = dbPetition.Model.findAll(query);
   
