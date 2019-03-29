@@ -5,7 +5,7 @@ const {
 } = require('./model');
 
 exports.id = (req, res, next, id)=>{
-  Model.findById(id).then(response=>{
+  Model.findByPk(id).then(response=>{
     if(response){
       req.response = response;
       next();

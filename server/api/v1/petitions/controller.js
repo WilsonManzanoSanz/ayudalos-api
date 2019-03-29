@@ -29,7 +29,7 @@ const includes = { include:[
       ]};
 
 exports.id = (req, res, next, id)=>{
-  Petition.findById(id, includes).then(response=>{
+  Petition.findByPk(id, includes).then(response=>{
     if(response){
       req.response = response;
       next();

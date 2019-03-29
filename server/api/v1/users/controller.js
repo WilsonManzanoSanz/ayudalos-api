@@ -43,7 +43,7 @@ exports.id = (req, res, next, id) => {
      includes.include[1].limit = parseInt(limit);
      includes.include[1].offset = parseInt(skip);
   }
-  User.findById(id,includes)
+  User.findByPk(id,includes)
     .then(response=>{
       if(response){
         req.response = response;
@@ -92,59 +92,6 @@ exports.all = (req, res, next) => {
   }
 };
 
-exports.create = (req, res, next) => {
-  const {
-    body,
-  } = req;
-  
-  if(!body.photoURL){
-    body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
-  }
-  console.log('UID', JSON.stringify(body.uid));
-  User.findById(body.uid, includesAll)
-        .then((obj) => {
-                 res.json({
-                    success:true,
-                    data:obj
-                  });
-            if(obj) { // update
-                User.update(body)
-                .then(response => {
-                  res.json({
-                    success:true,
-                    data:response
-                  });
-                })
-                .catch((err) => {
-                  next(new Error(err));
-                });
-            }
-            else { // insert
-                User.create(body)
-                .then(created => {
-                  res.json({
-                    success:true,
-                    data:created
-                  });
-                })
-                .catch((err) => {
-                  next(new Error(err));
-                });
-            }
-      }).catch((error) =>  next(new Error(error)));
-};
-
-
-exports.read = (req, res, next) => {
-  const {
-    response,
-  } = req;
-  res.json({
-      success:true,
-     data:response
-    });
-};
-
 exports.update = (req, res, next) => {
   const {
     response,
@@ -161,6 +108,37 @@ exports.update = (req, res, next) => {
       next(new Error(err));
     });
 };
+
+exports.create = (req, res, next) => {
+  const {
+    body,
+  } = req;
+  
+  if(!body.photoURL){
+    body.photoURL = 'https://png.icons8.com/color/1600/person-male.png';
+  }
+  includesAll.where = {uid:body.uid};
+  includesAll.defaults = body;
+  User.findOrCreate(includesAll)
+        .then((obj) => {
+          res.json({
+            success:true,
+            data:obj
+          });
+      }).catch((error) =>  next(new Error(error)));
+};
+
+
+exports.read = (req, res, next) => {
+  const {
+    response,
+  } = req;
+  res.json({
+      success:true,
+     data:response
+    });
+};
+
 
 exports.delete = (req, res, next) => {
   const {

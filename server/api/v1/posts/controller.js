@@ -29,7 +29,7 @@ const includes = { include:[
       ]};
 
 exports.id = (req, res, next, id)=>{
-  Post.findById(id, includes).then(response=>{
+  Post.findByPk(id, includes).then(response=>{
     if(response){
       req.response = response;
       next();
